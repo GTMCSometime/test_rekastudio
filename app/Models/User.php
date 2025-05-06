@@ -21,13 +21,20 @@ class User extends Authenticatable
     protected $table = 'users';
 
 
-public static function boot()
+    protected static function boot()
 {
-    parent::boot();
+        parent::boot();
     
-    static::creating(function ($user) {
-        $user->api_token = Str::random(80);
-    });
+        static::creating(function ($user) {
+            $user->api_token = $user->generateApiToken();
+        });
+}
+
+
+public function generateApiToken()
+{
+    $user_data = $this->id . $this->email . $this->password;
+    return hash('sha256', $user_data . Str::random(40));
 }
 
 public function tasks()
