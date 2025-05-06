@@ -1,8 +1,9 @@
 <?php
 
+use App\Http\Controllers\User\RegisterController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/user', function (Request $request) {
-    return $request->user();
-})->middleware('auth:sanctum');
+Route::group(["prefix"=> "users"], function () {
+    Route::post('/', [RegisterController::class, 'register'])->name('users.register');
+});
