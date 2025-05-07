@@ -2,29 +2,26 @@
 
 namespace App\Service\Tag;
 
-use App\Models\Tag;
 use Illuminate\Support\Facades\DB;
 
-class TagStoreService  {
+class TagUpdateService  {
 
-    public function store(array $data) {
+    public function update(array $data, $tag) {
         try {
-            $tag = Tag::create([
-                'title' => $data['title'],
-            ]);
+            $tag->update($data);
             
 
             DB::commit();
 
             return response()->json([
-                'message' => 'Тег создан.',
-                'data' => $tag], 201);
+                'message' => 'Тег обновлен.',
+                'data' => $data['title']], 201);
 
         } catch(\Exception $exception) {
 
             DB::rollBack();
             return response()->json([
-                'error' => 'Не удалось создать тег!',
+                'error' => 'Не удалось обновить тег!',
                 'message' => $exception->getMessage(),
             ], 500);
         }

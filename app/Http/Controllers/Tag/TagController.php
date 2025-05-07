@@ -3,8 +3,7 @@
 namespace App\Http\Controllers\Tag;
 
 use App\Http\Requests\Tag\TagStoreRequest;
-use App\Http\Requests\Task\TaskStoreRequest;
-use Illuminate\Http\Request;
+use App\Models\Tag;
 
 class TagController extends TagBaseController
 {
@@ -37,9 +36,11 @@ class TagController extends TagBaseController
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(TagStoreRequest $request, Tag $tag)
     {
-        //
+        $data = $request->validated();
+        $response = $this->tagUpdateService->update($data, $tag);
+        return $response;
     }
 
     /**

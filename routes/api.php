@@ -15,12 +15,7 @@ Route::group(["prefix"=> "users"], function () {
 
 
 Route::middleware(TokenAuthMiddleware::class)->group(function () {
-Route::group(['prefix'=> 'tasks'], function () {
-    Route::apiResource('/', TaskController::class);
-});
 
-
-Route::group(['prefix'=> 'tags'], function () {
-    Route::apiResource('/', TagController::class);
-});
+    Route::apiResource('tasks', TaskController::class);
+    Route::apiResource('tags', TagController::class);
 });
