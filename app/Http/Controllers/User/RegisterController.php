@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\User;
 
-use App\Http\Requests\UserRegisterRequest;
+use App\Http\Requests\User\UserRegisterRequest;
 
 class RegisterController extends UserBaseController
 {
@@ -10,7 +10,7 @@ class RegisterController extends UserBaseController
     {
         $data = $request->validated();
         // основная логика перенесена в сервис
-        $response = $this->registerService->register($data);
+        $response = $this->userRegisterService->register($data);
         return $response;
     }
 }

@@ -31,7 +31,7 @@ class User extends Authenticatable
 }
 
 
-public function generateApiToken()
+public function generateApiToken(): string
 {
     $user_data = $this->id . $this->email . $this->password;
     return hash('sha256', $user_data . Str::random(40));

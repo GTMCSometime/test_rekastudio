@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\User;
 
-use App\Http\Requests\UserLoginRequest;
+use App\Http\Requests\User\UserLoginRequest;
 
 class LoginController extends UserBaseController
 {
@@ -10,7 +10,7 @@ class LoginController extends UserBaseController
     {
         $data = $request->validated();
         // основная логика перенесена в сервис
-        $response = $this->loginService->login($data);
+        $response = $this->userLoginService->login($data);
         return $response;
     }
 }

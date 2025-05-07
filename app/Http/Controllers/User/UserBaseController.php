@@ -8,17 +8,17 @@ use App\Service\User\UserRegisterService;
 
 abstract class UserBaseController extends Controller
 {
-    public $registerService;
-    public $loginService;
+    public $userRegisterService;
+    public $userLoginService;
 
 
     public function __construct(
-        UserRegisterService $registerService, 
-        UserLoginService $loginService,
+        UserRegisterService $userRegisterService, 
+        UserLoginService $userLoginService,
         ) {
 
-        $this->registerService = $registerService;
-        $this->loginService = $loginService;
+        $this->userRegisterService = $userRegisterService;
+        $this->userLoginService = $userLoginService;
         
     }
 }
