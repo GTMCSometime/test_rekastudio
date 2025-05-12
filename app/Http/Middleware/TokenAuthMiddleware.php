@@ -21,8 +21,7 @@ class TokenAuthMiddleware
         $user = User::where("api_token", $api_token)->first();
         if (!$user) {
             return response()->json([
-                'error' => 'Ошибка авторизациию. Некорректный токен!',
-                'data' => $api_token], 401);
+                'error' => 'Ошибка авторизациию. Некорректный токен!'], 401);
             }
 
 

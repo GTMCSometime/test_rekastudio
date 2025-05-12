@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Task;
 
 use App\Http\Requests\Task\TaskStoreRequest;
 use App\Http\Requests\Task\TaskUpdateRequest;
+use App\Http\Resources\TaskResource;
+use App\Models\Tag;
 use App\Models\Task;
 
 class TaskController extends TaskBaseController
@@ -13,7 +15,8 @@ class TaskController extends TaskBaseController
      */
     public function index()
     {
-        //
+        $tasks = auth()->user()->tasks()->with('tags')->paginate(10);
+        return TaskResource::collection($tasks);
     }
 
     /**

@@ -20,8 +20,7 @@ class UserRegisterService  {
             DB::commit();
 
             return response()->json([
-                'message' => 'Пользователь зарегистрирован',
-                'token' => $user->api_token], 201);
+                'message' => 'Пользователь зарегистрирован'], 201);
 
         } catch(\Exception $exception) {
 

@@ -1,6 +1,6 @@
 <?php
 
-// Получение токена
+// Получение токена УЖЕ ЗАРЕГИСТРИРОВАННОГО пользователя
 $loginData = [
     'email' => 'user@example.com',
     'password' => 'userUser123'
