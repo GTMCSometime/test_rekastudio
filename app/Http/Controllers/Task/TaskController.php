@@ -4,24 +4,18 @@ namespace App\Http\Controllers\Task;
 
 use App\Http\Requests\Task\TaskStoreRequest;
 use App\Http\Requests\Task\TaskUpdateRequest;
-use App\Http\Resources\TaskResource;
-use App\Models\Tag;
 use App\Models\Task;
+use Illuminate\Support\Facades\Auth;
 
 class TaskController extends TaskBaseController
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        $tasks = auth()->user()->tasks()->with('tags')->paginate(10);
-        return TaskResource::collection($tasks);
+        $tasks = Auth::user()->tasks()->with('tags')->orderBy('id', 'desc')->get();
+        return response()->json($tasks);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+
     public function store(TaskStoreRequest $request)
     {
         $data = $request->validated();
@@ -29,17 +23,13 @@ class TaskController extends TaskBaseController
         return $response;
     }
 
-    /**
-     * Display the specified resource.
-     */
+
     public function show(string $id)
     {
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
+
     public function update(TaskUpdateRequest $request, Task $task)
     {
         $data = $request->validated();
@@ -47,9 +37,7 @@ class TaskController extends TaskBaseController
         return $response;
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
+
     public function destroy(Task $task)
     {
         $response = $this->taskDestroyService->destroy($task);

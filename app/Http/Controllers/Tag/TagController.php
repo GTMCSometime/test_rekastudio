@@ -7,17 +7,13 @@ use App\Models\Tag;
 
 class TagController extends TagBaseController
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        $tags = Tag::all();
+        return response()->json($tags);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+
     public function store(TagStoreRequest $request)
     {
         $data = $request->validated();
@@ -25,17 +21,13 @@ class TagController extends TagBaseController
         return $response;
     }
 
-    /**
-     * Display the specified resource.
-     */
+
     public function show(string $id)
     {
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
+
     public function update(TagStoreRequest $request, Tag $tag)
     {
         $data = $request->validated();
@@ -43,9 +35,7 @@ class TagController extends TagBaseController
         return $response;
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
+
     public function destroy(string $id)
     {
         //
