@@ -6,7 +6,7 @@ $loginData = [
     'password' => 'userUser123'
 ];
 
-$ch = curl_init('http://localhost:8006/api/login');
+$ch = curl_init('http://nginx/api/login');
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 curl_setopt($ch, CURLOPT_POST, true);
 curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($loginData));
@@ -29,7 +29,7 @@ $taskData = [
     'tags' => [1, 2] // ID существующих тегов (заполнить самостоятельно, либо через php artisan:db seed)
 ];
 
-$ch = curl_init('http://localhost:8006/api/tasks');
+$ch = curl_init('http://nginx/api/tasks');
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 curl_setopt($ch, CURLOPT_POST, true);
 curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($taskData));
@@ -45,7 +45,7 @@ echo "Создание задачи:\n";
 print_r($task);
 
 // Получение списка задач
-$ch = curl_init('http://localhost:8006/api/tasks');
+$ch = curl_init('http://nginx/api/tasks');
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 curl_setopt($ch, CURLOPT_HTTPHEADER, [
     'Authorization: Bearer ' . $token

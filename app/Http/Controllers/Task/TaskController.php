@@ -19,20 +19,22 @@ class TaskController extends TaskBaseController
     public function store(TaskStoreRequest $request)
     {
         $data = $request->validated();
+        // основная логика перенесена в сервис
         $response = $this->taskStoreService->store($data, $request);
         return $response;
     }
 
 
-    public function show(string $id)
+    public function show(Task $task)
     {
-        //
+        return response()->json($task->load('tags'));
     }
 
 
     public function update(TaskUpdateRequest $request, Task $task)
     {
         $data = $request->validated();
+        // основная логика перенесена в сервис
         $response = $this->taskUpdateService->update($data, $task);
         return $response;
     }
@@ -40,6 +42,7 @@ class TaskController extends TaskBaseController
 
     public function destroy(Task $task)
     {
+        // основная логика перенесена в сервис
         $response = $this->taskDestroyService->destroy($task);
         return $response;
     }

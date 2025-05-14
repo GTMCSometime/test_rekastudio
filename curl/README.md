@@ -1,6 +1,5 @@
 ## В терминале:
-- cd curl
-- php tasks.php
+-  docker exec -it (имя app контейнера) php /var/www/curl/tasks.php
 
 
 ## Дополнительная информация:

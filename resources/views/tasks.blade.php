@@ -36,6 +36,26 @@
   </div>
     <button type="submit" class="btn btn-success">Создать</button>
   </form>
+
+  <form id="taskFormEdit" class="mb-4" style="display:none;">
+  <h5>Редактировать задачу</h5>
+  <input type="hidden" id="edit-task-id">
+  <div class="mb-2">
+    <input type="text" id="edtiTaskTitle" class="form-control" placeholder="Название" required>
+  </div>
+  <div class="mb-2">
+    <textarea id="edtiTaskText" class="form-control" placeholder="Описание задачи" required></textarea>
+  </div>
+  <div class="mb-2">
+    <label>Теги:</label>
+    <select id="edtiTagsSelect" class="form-select" multiple></select>
+  </div>
+  <div class="mb-2">
+    <button type="button" class="btn btn-primary" onclick="updateTask()">Обновить</button>
+    <button type="button" class="btn btn-secondary" onclick="$('#taskFormEdit').hide()">Отмена</button>
+  </div>
+</form>
+
   
 
     <form id="tagForm" class="mb-4" style="display:none;">
@@ -50,6 +70,10 @@
   <div id="taskList" class="border-top pt-3"></div>
 
 <script>
+
+$('#taskFormEdit').on('submit', function(e) {
+  e.preventDefault();
+});
 
 let apiToken = null;
 
@@ -88,6 +112,7 @@ function loadTasks() {
               <p class="card-text">${task.text || ''}</p>
               <div class="tags-container mb-2">${tagsHtml}</div>
               <button class="btn btn-danger btn-sm" onclick="deleteTask(${task.id})">Удалить</button>
+              <button class="btn btn-warning btn-sm" onclick="editTask(${task.id})">Обновить</button>
             </div>
           </div>
         `);
@@ -97,20 +122,20 @@ function loadTasks() {
 }
 
 function loadTags() {
-  $.ajax({
-    url: '/api/tags',
-    method: 'GET',
-    headers: { Authorization: 'Bearer ' + apiToken },
-    success: function(tags) {
-      $('#tagsSelect').empty();
-      tags.forEach(tag => {
-        $('#tagsSelect').append(
-          new Option(tag.title, tag.id)
-        );
-      });
-    }
-  });
+    return $.ajax({
+        url: '/api/tags',
+        method: 'GET',
+        headers: { Authorization: 'Bearer ' + apiToken }
+    }).then(function(tags) {
+        ['#tagsSelect', '#edtiTagsSelect'].forEach(selector => {
+            $(selector).empty();
+            tags.forEach(tag => {
+                $(selector).append(new Option(tag.title, tag.id));
+            });
+        });
+    });
 }
+
 $('#taskForm').on('submit', function(e) {
   e.preventDefault();
   const formData = {
@@ -131,6 +156,54 @@ $('#taskForm').on('submit', function(e) {
     }
   });
 });
+
+function editTask(id) {
+    $.ajax({
+        url: `/api/tasks/${id}`,
+        method: 'GET',
+        headers: { Authorization: 'Bearer ' + apiToken },
+        success: function(task) {
+            $('#edit-task-id').val(task.id);
+            $('#edtiTaskTitle').val(task.title);
+            $('#edtiTaskText').val(task.text);
+            
+            $('#edtiTagsSelect').empty();
+            loadTags().then(() => {
+                const selectedTags = task.tags.map(tag => tag.id);
+                $('#edtiTagsSelect').val(selectedTags);
+            });
+            
+            $('#taskFormEdit').show();
+        }
+    });
+}
+
+
+function updateTask() {
+  const id = $('#edit-task-id').val();
+  const data = {
+    title: $('#edtiTaskTitle').val(),
+    text: $('#edtiTaskText').val(),
+    tags: $('#edtiTagsSelect').val() || []
+  };
+
+  $.ajax({
+    url: `/api/tasks/${id}`,
+    method: 'PUT',
+    headers: { 
+      'Authorization': 'Bearer ' + apiToken,
+      'Content-Type': 'application/json'
+    },
+    data: JSON.stringify(data),
+    success: function() {
+      $('#taskFormEdit').hide();
+      loadTasks();
+    },
+    error: function(xhr) {
+      alert('Ошибка обновления: ' + xhr.responseJSON.message);
+    }
+  });
+}
 
 function deleteTask(id) {
   $.ajax({
