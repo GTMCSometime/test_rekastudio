@@ -88,7 +88,6 @@ function loadTasks() {
               <p class="card-text">${task.text || ''}</p>
               <div class="tags-container mb-2">${tagsHtml}</div>
               <button class="btn btn-danger btn-sm" onclick="deleteTask(${task.id})">Удалить</button>
-              <button class="btn btn-warning btn-sm" onclick="updateTask(${task.id})">Обновить</button>
             </div>
           </div>
         `);
