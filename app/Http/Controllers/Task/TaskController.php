@@ -18,10 +18,18 @@ class TaskController extends TaskBaseController
 
     public function store(TaskStoreRequest $request)
     {
-        $data = $request->validated();
-        // основная логика перенесена в сервис
-        $response = $this->taskStoreService->store($data, $request);
-        return $response;
+        try {
+            $data = $request->validated();
+            $response = $this->taskStoreService->store($data, $request);
+            return response()->json([
+                'message' => 'Задача создана',
+                'data' => $response], 201);
+        } catch (\Exception $exception) {
+            return response()->json([
+                'error' => 'Ошибка при создании задачи',
+                'message' => $exception->getMessage(),
+            ], 500);
+        }
     }
 
 
@@ -33,17 +41,33 @@ class TaskController extends TaskBaseController
 
     public function update(TaskUpdateRequest $request, Task $task)
     {
-        $data = $request->validated();
-        // основная логика перенесена в сервис
-        $response = $this->taskUpdateService->update($data, $task);
-        return $response;
+        try {
+            $data = $request->validated();
+            $response = $this->taskUpdateService->update($data, $task);
+            return response()->json([
+                'message' => 'Задача обновлена',
+                'data' => $response], 201);
+        } catch (\Exception $exception) {
+            return response()->json([
+                'error' => 'Ошибка при обновлении задачи',
+                'message' => $exception->getMessage(),
+            ], 500);
+        }
     }
 
 
     public function destroy(Task $task)
     {
-        // основная логика перенесена в сервис
-        $response = $this->taskDestroyService->destroy($task);
-        return $response;
+        try {
+            $response = $this->taskDestroyService->destroy($task);
+            return response()->json([
+                'message' => 'Задача удалена',
+                'data' => $response], 201);
+        } catch (\Exception $exception) {
+            return response()->json([
+                'error' => 'Ошибка при удалении задачи',
+                'message' => $exception->getMessage(),
+            ], 500);
+        }
     }
 }

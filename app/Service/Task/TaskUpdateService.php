@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 class TaskUpdateService  {
 
     public function update(array $data, $task) {
+        DB::beginTransaction();
         try {
             if(isset($data["title"])) {
                 $task->update([
@@ -20,24 +21,19 @@ class TaskUpdateService  {
                 ]);
             }
 
-
             if (isset($data["tags"])) {
                 $task->tags()->sync($data["tags"]);
                 }
             
-
+                
             DB::commit();
 
-            return response()->json(
-                $task->load('tags'), 201);
+            return $task->load('tags');
 
         } catch(\Exception $exception) {
 
             DB::rollBack();
-            return response()->json([
-                'error' => 'Не удалось обновить задачу!',
-                'message' => $exception->getMessage(),
-            ], 500);
+            throw $exception;
         }
     }
 }

@@ -8,26 +8,18 @@ use Illuminate\Support\Facades\DB;
 class TaskStoreService  {
 
     public function store(array $data, $request) {
+        DB::beginTransaction();
         try {
             $task = Auth::user()->tasks()->create($data);
     
             if ($request->has('tags')) {
                 $task->tags()->attach($request->tags);
             }
-            
-
             DB::commit();
-
-            return response()->json(
-                $task->load('tags'), 201);
-
+            return $task;
         } catch(\Exception $exception) {
-
             DB::rollBack();
-            return response()->json([
-                'error' => 'Не удалось создать задачу!',
-                'message' => $exception->getMessage(),
-            ], 500);
+            throw $exception;
         }
     }
 }

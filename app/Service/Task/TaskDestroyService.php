@@ -7,13 +7,14 @@ use Illuminate\Support\Facades\DB;
 class TaskDestroyService  {
 
     public function destroy($task) {
-        DB::transaction(function () use ($task) {
-            $task->tags()->detach();
-            $task->delete();
-        });
-    
-        return response()->json([
-            'message' => 'Задача удалена'
-        ], 200);
-}
+        DB::beginTransaction();
+        try {
+            $taskDelete = $task->delete();
+            DB::commit();
+            return $taskDelete;
+        } catch(\Exception $exception) {
+            DB::rollBack();
+            throw $exception;
+        }
+    }
 }
