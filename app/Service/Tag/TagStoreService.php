@@ -8,25 +8,16 @@ use Illuminate\Support\Facades\DB;
 class TagStoreService  {
 
     public function store(array $data) {
+        DB::beginTransaction();
         try {
             $tag = Tag::create([
                 'title' => $data['title'],
             ]);
-            
-
             DB::commit();
-
-            return response()->json([
-                'message' => 'Тег создан.',
-                'data' => $tag], 201);
-
+            return $tag;
         } catch(\Exception $exception) {
-
             DB::rollBack();
-            return response()->json([
-                'error' => 'Не удалось создать тег!',
-                'message' => $exception->getMessage(),
-            ], 500);
+            throw $exception;
         }
     }
 }

@@ -16,9 +16,18 @@ class TagController extends TagBaseController
 
     public function store(TagStoreRequest $request)
     {
-        $data = $request->validated();
-        $response = $this->tagStoreService->store($data);
-        return $response;
+        try {
+            $data = $request->validated();
+            $response = $this->tagStoreService->store($data);
+            return response()->json([
+                'message' => 'Тег создан',
+                'data' => $response], 201);
+        } catch (\Exception $exception) {
+            return response()->json([
+                'error' => 'Ошибка при создании тега',
+                'message' => $exception->getMessage(),
+            ], 500);
+        }
     }
 
 
@@ -30,9 +39,18 @@ class TagController extends TagBaseController
 
     public function update(TagStoreRequest $request, Tag $tag)
     {
-        $data = $request->validated();
-        $response = $this->tagUpdateService->update($data, $tag);
-        return $response;
+        try {
+            $data = $request->validated();
+            $response = $this->tagUpdateService->update($data, $tag);
+            return response()->json([
+                'message' => 'Тег обновлен',
+                'data' => $response], 201);
+        } catch (\Exception $exception) {
+            return response()->json([
+                'error' => 'Ошибка при обновлении тега',
+                'message' => $exception->getMessage(),
+            ], 500);
+        }
     }
 
 
