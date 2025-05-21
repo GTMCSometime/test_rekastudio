@@ -17,8 +17,12 @@ return new class extends Migration
             $table->unsignedBigInteger('tag_id');
             $table->timestamps();
             
-            $table->foreign('task_id')->references('id')->on('tasks');
-            $table->foreign('tag_id')->references('id')->on('tags');
+            $table->foreign('task_id')->references('id')
+            ->on('tasks')
+            ->onDelete('cascade');
+            $table->foreign('tag_id')->references('id')
+            ->on('tags')
+            ->onDelete('cascade');
         });
     }
 
@@ -27,6 +31,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('task_tag');
+        Schema::dropIfExists('tag_task');
     }
 };
