@@ -9,9 +9,8 @@ class TaskDestroyService  {
     public function destroy($task) {
         DB::beginTransaction();
         try {
-            $taskDelete = $task->delete();
+            $task->delete();
             DB::commit();
-            return $taskDelete;
         } catch(\Exception $exception) {
             DB::rollBack();
             throw $exception;

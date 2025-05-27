@@ -2,6 +2,7 @@
 
 namespace App\Service\Tag;
 
+use App\Http\Resources\TagResource;
 use App\Models\Tag;
 use Illuminate\Support\Facades\DB;
 
@@ -14,7 +15,7 @@ class TagStoreService  {
                 'title' => $data['title'],
             ]);
             DB::commit();
-            return $tag;
+            return new TagResource($tag);
         } catch(\Exception $exception) {
             DB::rollBack();
             throw $exception;

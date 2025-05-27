@@ -2,6 +2,7 @@
 
 namespace App\Service\Tag;
 
+use App\Http\Resources\TagResource;
 use Illuminate\Support\Facades\DB;
 
 class TagUpdateService  {
@@ -11,7 +12,7 @@ class TagUpdateService  {
         try {
             $TagUpdate = $tag->update($data);
             DB::commit();
-            return $TagUpdate;
+            return new TagResource($TagUpdate);
         } catch(\Exception $exception) {
             DB::rollBack();
             throw $exception;

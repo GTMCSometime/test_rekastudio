@@ -2,6 +2,7 @@
 
 namespace App\Service\Task;
 
+use App\Http\Resources\TaskResource;
 use Illuminate\Support\Facades\DB;
 
 class TaskUpdateService  {
@@ -28,7 +29,8 @@ class TaskUpdateService  {
                 
             DB::commit();
 
-            return $task->load('tags');
+            $updateTask = $task->load('tags');
+            return new TaskResource($updateTask);
 
         } catch(\Exception $exception) {
 

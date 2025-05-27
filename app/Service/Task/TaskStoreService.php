@@ -2,6 +2,7 @@
 
 namespace App\Service\Task;
 
+use App\Http\Resources\TaskResource;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
@@ -16,7 +17,7 @@ class TaskStoreService  {
                 $task->tags()->attach($request->tags);
             }
             DB::commit();
-            return $task;
+            return new TaskResource($task);
         } catch(\Exception $exception) {
             DB::rollBack();
             throw $exception;
